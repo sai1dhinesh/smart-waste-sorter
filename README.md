@@ -6,4 +6,5 @@ A basic machine learning model that classifies waste into biodegradable or non-b
 ## How to Run:
 bash
 pip install scikit-learn
+
 python smart_waste_sorter.py
