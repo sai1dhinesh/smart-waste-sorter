@@ -1,0 +1,55 @@
+# smart_waste_sorter.py
+
+import numpy as np
+from sklearn.naive_bayes import GaussianNB
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, classification_report
+import random
+
+# Simulated dataset: [color_intensity, texture, weight, shape, material_density]
+X = [
+    [1, 0, 0.3, 0.6, 0.8],
+    [0, 1, 0.7, 0.3, 0.2],
+    [1, 1, 0.2, 0.8, 0.9],
+    [0, 0, 0.8, 0.2, 0.1],
+    [1, 1, 0.4, 0.5, 0.7],
+    [0, 0, 0.9, 0.1, 0.2],
+    [1, 0, 0.5, 0.7, 0.6],
+    [0, 1, 0.6, 0.4, 0.3]
+]
+y = ['biodegradable', 'non-biodegradable', 'biodegradable', 'non-biodegradable',
+     'biodegradable', 'non-biodegradable', 'biodegradable', 'non-biodegradable']
+
+# Convert to numpy arrays
+X = np.array(X)
+y = np.array(y)
+
+# Train/test split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
+
+# Model training
+model = GaussianNB()
+model.fit(X_train, y_train)
+
+# Predictions
+y_pred = model.predict(X_test)
+
+# Results
+print("\nPrediction Results:", y_pred)
+print("\nAccuracy:", accuracy_score(y_test, y_pred))
+print("\nClassification Report:\n", classification_report(y_test, y_pred))
+
+# Simulate a real-time prediction scenario
+def simulate_sensor_input():
+    return [
+        round(random.uniform(0, 1), 2),  # color_intensity
+        round(random.uniform(0, 1), 2),  # texture
+        round(random.uniform(0.1, 1), 2),  # weight
+        round(random.uniform(0, 1), 2),  # shape
+        round(random.uniform(0, 1), 2)   # material_density
+    ]
+
+new_sample = simulate_sensor_input()
+prediction = model.predict([new_sample])
+print("\nReal-time sample:", new_sample)
+print("Predicted class:", prediction[0])
